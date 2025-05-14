@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* styles.css */
+
+.category-item {
+    background-color: #f0f0f0;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .category-item:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .category-item.selected {
+    background-color: #ff00956e;
+  }
+  
