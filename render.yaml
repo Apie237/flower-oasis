@@ -1,0 +1,25 @@
+services:
+  # ✅ BACKEND: Node.js/Express API
+  - type: web
+    name: backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    plan: free
+    
+
+  # ✅ FRONTEND: Customer-facing website (Vite + npm)
+  - type: static
+    name: frontend
+    rootDir: frontend
+    buildCommand: npm run build
+    staticPublishPath: dist
+    
+  # ✅ ADMIN: Admin panel (Vite + npm)
+  - type: static
+    name: admin
+    rootDir: admin
+    buildCommand: npm run build
+    staticPublishPath: dist
+    
