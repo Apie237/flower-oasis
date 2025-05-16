@@ -19,7 +19,7 @@ const Cart = () => {
       <div className="text-center py-16">
         <h2 className="text-2xl font-semibold text-gray-800">Your cart is empty</h2>
         <button
-          onClick={() => navigate("/products")}
+          onClick={() => navigate("/collection")}
           className="mt-6 bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition-transform hover:scale-105"
         >
           Continue Shopping
