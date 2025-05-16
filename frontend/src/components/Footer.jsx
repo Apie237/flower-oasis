@@ -8,6 +8,7 @@ import {
   MapPin,
   Heart 
 } from 'lucide-react';
+import { assets } from '../assets/assets';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -129,7 +130,7 @@ export default function Footer() {
         {/* Bottom Section */}
         <div className="text-center">
           <div className="mb-4">
-            <img src="/api/placeholder/120/40" alt="Payment methods" className="h-6 mx-auto" />
+            <img src={assets.paymentMethods} alt="Payment methods" className="h-6 mx-auto" />
           </div>
           <div className="text-gray-500 text-sm flex flex-col md:flex-row justify-center items-center md:space-x-4">
             <p>&copy; {currentYear} Flower Oasis. All rights reserved.</p>

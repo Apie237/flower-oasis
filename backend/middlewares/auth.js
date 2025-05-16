@@ -1,3 +1,5 @@
+import jwt from 'jsonwebtoken'
+
 const authUser = async(req, res, next) => {
    console.log('👮 Auth middleware triggered');
    console.log('🔑 Headers received:', req.headers);

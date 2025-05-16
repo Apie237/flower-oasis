@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import CartTotal from '../components/CartTotal';
 import { assets } from '../assets/assets';
 import { ShopContext } from '../context/shopContext';
@@ -7,7 +7,21 @@ import { toast } from 'react-toastify';
 
 const PlaceOrder = () => {
   const [method, setMethod] = useState('cod');
-  const { navigate, token, cartItems, setCartItems, getCartAmount, delivery_fee, products, backendUrl, deliveryDate, deliveryTime, message, sumTotal } = useContext(ShopContext);
+  const { 
+    navigate, 
+    token, 
+    cartItems, 
+    setCartItems, 
+    getCartAmount, 
+    delivery_fee, 
+    products, 
+    backendUrl, 
+    deliveryDate, 
+    deliveryTime, 
+    message, 
+    sumTotal 
+  } = useContext(ShopContext);
+  
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -19,6 +33,25 @@ const PlaceOrder = () => {
     country: '',
     phone: ''
   });
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Check connection to backend on component mount
+  useEffect(() => {
+    const checkBackendConnection = async () => {
+      try {
+        // Simple health check
+        await axios.get(`${backendUrl}/api/health-check`);
+      } catch (error) {
+        console.log("Backend connection check failed:", error);
+        toast.warning("Backend service may be unavailable. Please try again later.", {
+          autoClose: 5000,
+        });
+      }
+    };
+    
+    checkBackendConnection();
+  }, [backendUrl]);
 
   const onChangeHandler = (event) => {
     const name = event.target.name;
@@ -36,19 +69,30 @@ const PlaceOrder = () => {
       order_id: order.id,
       receipt: order.id,
       handler: async (response) => {
-        console.log(response);
         try {
-          const { data } = await axios.post(backendUrl + '/api/order/verifyRazorpay', response, { headers: { token } });
+          const { data } = await axios.post(
+            `${backendUrl}/api/order/verifyRazorpay`, 
+            response, 
+            { 
+              headers: { 
+                token,
+                'Content-Type': 'application/json'
+              } 
+            }
+          );
+          
           if (data.success) {
-            navigate('/orders');
             setCartItems([]);
+            toast.success("Payment successful!");
+            navigate('/orders');
           }
         } catch (error) {
-          console.log(error);
-          toast.error(error.message);
+          console.error("Razorpay verification error:", error);
+          toast.error(error.response?.data?.message || error.message || "Payment verification failed");
         }
       }
     };
+    
     const rzp = new window.Razorpay(options);
     rzp.open();
   };
@@ -56,9 +100,27 @@ const PlaceOrder = () => {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     console.log('Submit button clicked');
-    navigate('/orders');
-
+    
+    // Prevent multiple submissions
+    if (isSubmitting) return;
+    
+    setIsSubmitting(true);
+    
     try {
+      // Validate token
+      if (!token) {
+        toast.error("You must be logged in to place an order");
+        navigate('/login');
+        return;
+      }
+
+      // Validate cart has items
+      if (cartItems.length === 0) {
+        toast.error("Your cart is empty");
+        navigate('/cart');
+        return;
+      }
+
       let orderItems = [];
 
       for (const item of cartItems) {
@@ -70,7 +132,7 @@ const PlaceOrder = () => {
           itemInfo.deliveryDate = deliveryDate;
           itemInfo.deliveryTime = deliveryTime;
           itemInfo.message = message;
-          itemInfo.sumTotal = sumTotal; // Include sumTotal
+          itemInfo.sumTotal = sumTotal;
           orderItems.push(itemInfo);
         }
       }
@@ -82,47 +144,93 @@ const PlaceOrder = () => {
         deliveryDate: deliveryDate,
         deliveryTime: deliveryTime,
         message: message,
-        sumTotal: sumTotal // Include sumTotal
+        sumTotal: sumTotal
       };
 
       switch (method) {
         case 'cod':
-          const response = await axios.post(`${backendUrl}/api/order/place`, orderData, { headers: { token } });
+          const response = await axios.post(
+            `${backendUrl}/api/order/place`, 
+            orderData, 
+            { 
+              headers: { 
+                token,
+                'Content-Type': 'application/json'
+              },
+              timeout: 10000 // 10 second timeout
+            }
+          );
+          
           if (response.data.success) {
             console.log('Order placed successfully:', response.data);
             setCartItems([]);
+            toast.success("Order placed successfully!");
             navigate('/orders');
           } else {
-            toast.error(response.data.message);
+            toast.error(response.data.message || "Failed to place order");
           }
           break;
 
         case 'stripe':
-          const responseStripe = await axios.post(backendUrl + '/api/order/stripe', orderData, { headers: { token } });
+          const responseStripe = await axios.post(
+            `${backendUrl}/api/order/stripe`, 
+            orderData, 
+            { 
+              headers: { 
+                token,
+                'Content-Type': 'application/json'
+              },
+              timeout: 10000
+            }
+          );
+          
           if (responseStripe.data.success) {
             const { session_url } = responseStripe.data;
             window.location.replace(session_url);
           } else {
-            toast.error(responseStripe.data.message);
+            toast.error(responseStripe.data.message || "Failed to initialize Stripe payment");
           }
           break;
 
         case 'razorpay':
-          const responseRazorpay = await axios.post(backendUrl + '/api/order/razorpay', orderData, { headers: { token } });
+          const responseRazorpay = await axios.post(
+            `${backendUrl}/api/order/razorpay`, 
+            orderData, 
+            { 
+              headers: { 
+                token,
+                'Content-Type': 'application/json'
+              },
+              timeout: 10000
+            }
+          );
+          
           if (responseRazorpay.data.success) {
             initPay(responseRazorpay.data.order);
           } else {
-            console.log(responseRazorpay.data.message);
-            toast.error(responseRazorpay.data.message);
+            toast.error(responseRazorpay.data.message || "Failed to initialize Razorpay payment");
           }
           break;
 
         default:
+          toast.error("Invalid payment method");
           break;
       }
     } catch (error) {
       console.log('Error placing order:', error);
-      toast.error(error.message);
+      
+      // Better error handling with specific messages
+      if (error.code === 'ERR_NETWORK') {
+        toast.error("Network error: Cannot connect to the server. Please check your internet connection.");
+      } else if (error.response?.status === 401) {
+        toast.error("Authentication error: Please login again");
+        // Redirect to login page
+        navigate('/login');
+      } else {
+        toast.error(error.response?.data?.message || error.message || "Error placing order");
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -173,7 +281,13 @@ const PlaceOrder = () => {
             </div>
 
             <div className="w-full text-end mt-8">
-              <button type='submit' className='bg-black text-white px-16 py-3 text-sm'>Place Order</button>
+              <button 
+                type='submit' 
+                className={`bg-black text-white px-16 py-3 text-sm ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Processing...' : 'Place Order'}
+              </button>
             </div>
           </div>
         </div>

@@ -64,16 +64,20 @@ const ProductDetails = () => {
     );
   };
 
-  // Scroll add-ons container
+  // Scroll add-ons container - adjusted for responsive behavior
   const scrollLeft = () => {
     if (addOnContainerRef.current) {
-      addOnContainerRef.current.scrollBy({ left: -540, behavior: 'smooth' });
+      // Adjust scroll amount based on container width
+      const scrollAmount = addOnContainerRef.current.clientWidth * 0.8;
+      addOnContainerRef.current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
     }
   };
 
   const scrollRight = () => {
     if (addOnContainerRef.current) {
-      addOnContainerRef.current.scrollBy({ left: 540, behavior: 'smooth' });
+      // Adjust scroll amount based on container width
+      const scrollAmount = addOnContainerRef.current.clientWidth * 0.8;
+      addOnContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   };
 
@@ -96,33 +100,33 @@ const ProductDetails = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="flex flex-col md:flex-row gap-6 items-start">
-        {/* Product Images */}
-        <div className="flex-1 flex gap-2">
-          <div className="flex flex-col gap-2 w-14 overflow-y-auto max-h-96">
+    <div className="container mx-auto px-4 py-6">
+      <div className="flex flex-col lg:flex-row gap-6 items-start">
+        {/* Product Images - Responsive */}
+        <div className="w-full lg:w-1/2 flex flex-col md:flex-row gap-4">
+          <div className="flex flex-row md:flex-col gap-2 md:w-16 overflow-x-auto md:overflow-y-auto max-h-96 mb-2 md:mb-0">
             {productData.image.map((item, index) => (
               <img
                 key={index}
                 src={item}
                 onClick={() => setImage(item)}
-                className="w-24 h-20 object-cover rounded-md border cursor-pointer hover:scale-105 transition-transform duration-300"
+                className="min-w-16 w-16 h-16 object-cover rounded-md border cursor-pointer hover:scale-105 transition-transform duration-300"
                 alt={`${productData.name} thumbnail ${index + 1}`}
               />
             ))}
           </div>
           <div className="flex-1">
             <img
-              className="w-full max-w-[450px] h-[450px] object-cover rounded-lg shadow-md transition-transform duration-300 hover:scale-105"
+              className="w-full h-auto md:h-[400px] object-cover rounded-lg shadow-md transition-transform duration-300 hover:scale-105"
               src={image}
               alt={productData.name}
             />
           </div>
         </div>
 
-        {/* Product Info */}
-        <div className="flex-1 space-y-4 pl-2">
-          <h1 className="text-2xl font-semibold">{productData.name}</h1>
+        {/* Product Info - Responsive */}
+        <div className="w-full lg:w-1/2 space-y-4 mt-4 lg:mt-0">
+          <h1 className="text-xl md:text-2xl font-semibold">{productData.name}</h1>
           <div className="flex items-center space-x-1 text-yellow-500">
             {Array(4)
               .fill()
@@ -181,13 +185,13 @@ const ProductDetails = () => {
             </div>
           </div>
 
-          {/* Category Filter Buttons */}
+          {/* Category Filter Buttons - Responsive */}
           <div>
-            <h2 className="text-xl font-semibold mt-4">Select Add-Ons</h2>
-            <div className="mt-4 flex flex-wrap gap-3">
+            <h2 className="text-lg md:text-xl font-semibold mt-4">Select Add-Ons</h2>
+            <div className="mt-3 flex flex-wrap gap-2">
               <button
                 onClick={() => setFilterCategory('')}
-                className={`px-4 py-2 rounded-full border ${filterCategory === '' ? 'bg-pink-700 text-white' : 'bg-gray-200 text-gray-600'}`}
+                className={`px-3 py-1 text-sm md:px-4 md:py-2 rounded-full border ${filterCategory === '' ? 'bg-pink-700 text-white' : 'bg-gray-200 text-gray-600'}`}
               >
                 All
               </button>
@@ -195,7 +199,7 @@ const ProductDetails = () => {
                 <button
                   key={category}
                   onClick={() => setFilterCategory(category === filterCategory ? '' : category)}
-                  className={`px-4 py-2 rounded-full border ${filterCategory === category ? 'bg-pink-700 text-white' : 'bg-gray-200 text-gray-600'}`}
+                  className={`px-3 py-1 text-sm md:px-4 md:py-2 rounded-full border ${filterCategory === category ? 'bg-pink-700 text-white' : 'bg-gray-200 text-gray-600'}`}
                 >
                   {category.replace(/-/g, ' ')}
                 </button>
@@ -203,38 +207,47 @@ const ProductDetails = () => {
             </div>
           </div>
 
-          {/* Add-Ons Section */}
-          <div className="border rounded-lg p-4 mt-4 shadow-sm relative w-full lg:w-[35rem]">
+          {/* Add-Ons Section - Improved Responsiveness */}
+          <div className="border rounded-lg p-2 md:p-4 mt-4 shadow-sm relative w-full">
             <div className="flex items-center">
               <button
                 onClick={scrollLeft}
-                className="absolute left-0 bg-gray-200 px-2 py-1 rounded-md shadow-md hover:bg-gray-300 transition duration-300"
+                className="absolute left-0 z-10 bg-gray-200 px-1 py-2 md:px-2 md:py-1 rounded-md shadow-md hover:bg-gray-300 transition duration-300"
                 aria-label="Scroll left"
               >
                 ◀
               </button>
 
-              <div ref={addOnContainerRef} className="flex gap-3 overflow-x-auto scroll-smooth px-8 py-2">
+              <div 
+                ref={addOnContainerRef} 
+                className="flex gap-2 md:gap-3 overflow-x-auto scroll-smooth px-6 md:px-8 py-2 no-scrollbar"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
                 {filteredAddOns.length === 0 ? (
-                  <p className="text-gray-500 py-4">No add-ons available for this category.</p>
+                  <p className="text-gray-500 py-4 text-center w-full">No add-ons available for this category.</p>
                 ) : (
                   filteredAddOns.map((item, index) => (
                     <div
                       key={index}
-                      className={`flex flex-col items-center gap-2 p-3 border rounded-lg cursor-pointer transition-all duration-200 ${selectedAddOns.includes(item) ? 'border-pink-700 bg-pink-100 scale-105' : 'border-gray-300 hover:border-pink-300'
+                      className={`flex flex-col items-center gap-1 md:gap-2 p-2 md:p-3 border rounded-lg cursor-pointer transition-all duration-200 ${selectedAddOns.includes(item) ? 'border-pink-700 bg-pink-100 scale-105' : 'border-gray-300 hover:border-pink-300'
                         }`}
                       onClick={() => toggleAddOn(item)}
-                      style={{ minWidth: '180px', height: '220px' }}
+                      style={{ 
+                        minWidth: '120px', 
+                        width: '130px',
+                        height: '180px',
+                        flexShrink: 0
+                      }}
                     >
-                      <div className="h-32 w-32 overflow-hidden rounded-lg">
+                      <div className="h-20 w-20 md:h-24 md:w-24 overflow-hidden rounded-lg">
                         <img
                           src={item?.image?.[0]}
                           alt={item.name}
                           className="w-full h-full object-cover"
                         />
                       </div>
-                      <p className="text-sm font-medium text-center">{item.name}</p>
-                      <p className="text-sm text-gray-700">{currency} {item.price}</p>
+                      <p className="text-xs md:text-sm font-medium text-center line-clamp-2">{item.name}</p>
+                      <p className="text-xs md:text-sm text-gray-700">{currency} {item.price}</p>
                     </div>
                   ))
                 )}
@@ -242,7 +255,7 @@ const ProductDetails = () => {
 
               <button
                 onClick={scrollRight}
-                className="absolute right-0 bg-gray-200 px-2 py-1 rounded-md shadow-md hover:bg-gray-300 transition duration-300"
+                className="absolute right-0 z-10 bg-gray-200 px-1 py-2 md:px-2 md:py-1 rounded-md shadow-md hover:bg-gray-300 transition duration-300"
                 aria-label="Scroll right"
               >
                 ▶
@@ -263,14 +276,14 @@ const ProductDetails = () => {
             ></textarea>
           </div>
 
-          {/* Delivery Details Section */}
+          {/* Delivery Details Section - Responsive */}
           <div className="space-y-4 mt-6">
             {/* Deliver To Dropdown */}
             <div>
               <label htmlFor="deliveryLocation" className="block font-medium text-sm mb-2">Deliver To</label>
               <select
                 id="deliveryLocation"
-                className="w-64 px-4 py-2 bg-gray-100 text-gray-800 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-700"
+                className="w-full md:w-64 px-4 py-2 bg-gray-100 text-gray-800 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-700"
               >
                 <option value="">Select Location</option>
                 <option value="dubai">Dubai</option>
@@ -289,7 +302,7 @@ const ProductDetails = () => {
                 type="date"
                 value={deliveryDate}
                 onChange={(e) => setDeliveryDate(e.target.value)}
-                className="w-64 px-4 py-2 bg-gray-100 text-gray-800 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-700"
+                className="w-full md:w-64 px-4 py-2 bg-gray-100 text-gray-800 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-700"
                 min={new Date().toISOString().split('T')[0]}
               />
             </div>
@@ -301,7 +314,7 @@ const ProductDetails = () => {
                 id="deliveryTime"
                 value={deliveryTime}
                 onChange={(e) => setDeliveryTime(e.target.value)}
-                className="w-64 px-4 py-2 bg-gray-100 text-gray-800 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-700"
+                className="w-full md:w-64 px-4 py-2 bg-gray-100 text-gray-800 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-700"
               >
                 <option value="">Select Time</option>
                 <option value="9am-3pm">9 am to 3 pm</option>
@@ -310,8 +323,7 @@ const ProductDetails = () => {
             </div>
           </div>
 
-          {/* Add to Cart Button */}
-          {/* Add to Cart Button */}
+          {/* Add to Cart Button - Responsive */}
           <button
             onClick={() => {
               console.log("Adding to cart:", {
@@ -334,11 +346,10 @@ const ProductDetails = () => {
                 message
               );
             }}
-            className="w-72 py-4 bg-pink-700 text-white text-lg font-semibold rounded-md shadow-md hover:bg-pink-800 transition-transform transform hover:scale-105"
+            className="w-full md:w-72 py-3 md:py-4 bg-pink-700 text-white text-base md:text-lg font-semibold rounded-md shadow-md hover:bg-pink-800 transition-transform transform hover:scale-105"
           >
             Add to Cart
           </button>
-          {/* FAQ Section would go here */}
         </div>
       </div>
     </div>

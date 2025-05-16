@@ -34,7 +34,7 @@ const OccasionImages = () => {
                   {occasion.type.replace(/-/g, ' ')}
                 </h3>
                 <a
-                  href="#"
+                  href={occasion.link}
                   className="bg-white text-[#4A7043] font-semibold py-2 px-5 rounded-full transition-all duration-300 border-2 border-transparent hover:bg-transparent hover:border-white hover:text-white"
                 >
                   View Collection

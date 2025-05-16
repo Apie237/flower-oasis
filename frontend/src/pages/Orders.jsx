@@ -177,7 +177,7 @@ const Orders = () => {
           <h2 className="text-2xl font-semibold text-gray-700 mb-4">No orders found</h2>
           <p className="text-gray-500 mb-6">You don't have any {selectedTab !== 'all' ? selectedTab : ''} orders yet.</p>
           <button
-            onClick={() => window.location.href = '/collections'}
+            onClick={() => window.location.href = '/collection'}
             className="px-8 py-3 bg-pink-700 text-white rounded-md hover:bg-pink-800 transition-colors shadow-md"
           >
             Start Shopping

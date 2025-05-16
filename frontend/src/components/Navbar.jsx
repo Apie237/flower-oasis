@@ -73,7 +73,7 @@ const Navbar = () => {
           )}
         </Link>
 
-        <img src={assets.menu_icon} alt="Menu" className="w-7 cursor-pointer lg:hidden" />
+        <img src={assets.menuIcon} alt="Menu" className="w-7 cursor-pointer lg:hidden" />
       </div>
     </div>
   );

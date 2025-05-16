@@ -49,12 +49,16 @@ import christmasBaloon from './baloon5.jpg'
 import binIcon from './bin_icon.png'
 import userIcon from './user-icon.png'
 import hero_image from './hero_image.jpg'
+import menuIcon from './menu-icon.png'
+import paymentMethods from './payment-methods.jpg'
 
 
 
 
 
 export const assets = {
+    paymentMethods,
+    menuIcon,
     flower_logo,
     fo_logo,
     search_icon,
@@ -524,53 +528,65 @@ export const products = [
 export const collectionImages = [
     {
         type: 'bouquets',
-        image: 'delightful'
+        image: 'delightful',
+        link: '/collection/bouquets'
     },
     {
         type: 'boxes-baskets',
-        image: 'angelic'
+        image: 'angelic',
+        link: '/collection/boxes-baskets'
     },
     {
         type: 'dried-flowers',
-        image: 'millionStars'
+        image: 'millionStars',
+        link: '/collection/dried-flowers'
     },
     {
         type: 'forever-roses',
-        image: 'foreverRose'
+        image: 'foreverRose',
+        link: '/collection/forever-roses'
     },
     {
         type: 'roses',
-        image: 'beMyLady'
+        image: 'beMyLady',
+        link: '/collection/roses'
     },
     {
         type: 'lilies',
-        image: "you'reAStar"
+        image: "you'reAStar",
+        link: '/collection/lilies'
     }
 ];
 
 export const occasionImages = [
     {
         type: "valentine's-day",
-        image: 'passionOfLove'
+        image: 'passionOfLove',
+        link: "/occasion/valentine's-day"
     },
     {
         type: "eid",
-        image: 'adorable'
+        image: 'adorable',
+        link: '/occasion/eid'
     },
     {
         type: "anniversary",
-        image: 'iLoveYou'
+        image: 'iLoveYou',
+        link: '/occasion/anniversary'
     },
     {
         type: "christmas",
-        image: 'simplyDelightful'
+        image: 'simplyDelightful',
+        link: '/occasion/christmas'
     },
     {
         type: "congratulation",
-        image: "you'reAStar"
+        image: "you'reAStar",
+        link: '/occasion/congratulation'
     },
     {
         type: "new-born-baby",
-        image: 'babyPink'
+        image: 'babyPink',
+        link: '/occasion/new-born-baby'
     }
 ];
