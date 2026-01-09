@@ -1,3 +1,13 @@
+// Backend - Authentication Routes (userController.js)
+import validator from "validator";
+import bcrypt from "bcryptjs";
+import jwt from 'jsonwebtoken';
+import userModel from "../models/userModel.js";
+
+const createToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+};
+
 // Route for user login
 const loginUser = async (req, res) => {
   try {
