@@ -82,12 +82,9 @@ const ProductDetails = () => {
   };
 
   // Handle size change
-  const handleSizeChange = (action) => {
-    if (action === 'increase') {
-      setSize((prevSize) => (prevSize < productData.sizes.length ? prevSize + 1 : prevSize));
-    } else if (action === 'decrease') {
-      setSize((prevSize) => (prevSize > 1 ? prevSize - 1 : prevSize));
-    }
+  const handleSizeChange = (e) => {
+    const sizeIndex = parseInt(e.target.value, 10);
+    setSize(sizeIndex + 1); // Adding 1 because our size state is 1-indexed
   };
 
   // Handle quantity change
@@ -145,24 +142,21 @@ const ProductDetails = () => {
           </p>
           <p className="text-gray-500 text-sm">{productData.description}</p>
 
-          {/* Size Selection */}
+          {/* Size Selection - Changed to Dropdown */}
           <div>
-            <p className="font-medium text-sm">Select Size</p>
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => handleSizeChange('decrease')}
-                className="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center hover:bg-gray-300 transition"
-              >
-                -
-              </button>
-              <span className="text-lg font-semibold">{productData.sizes[size - 1]}</span>
-              <button
-                onClick={() => handleSizeChange('increase')}
-                className="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center hover:bg-gray-300 transition"
-              >
-                +
-              </button>
-            </div>
+            <label htmlFor="sizeDropdown" className="block font-medium text-sm mb-2">Select Size</label>
+            <select
+              id="sizeDropdown"
+              value={size - 1} // Subtract 1 because our size state is 1-indexed
+              onChange={handleSizeChange}
+              className="w-full md:w-64 px-4 py-2 bg-gray-100 text-gray-800 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-700"
+            >
+              {productData.sizes.map((sizeOption, index) => (
+                <option key={index} value={index}>
+                  {sizeOption}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Quantity Selection */}
@@ -284,6 +278,7 @@ const ProductDetails = () => {
               <select
                 id="deliveryLocation"
                 className="w-full md:w-64 px-4 py-2 bg-gray-100 text-gray-800 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-700"
+                defaultValue="dubai"
               >
                 <option value="">Select Location</option>
                 <option value="dubai">Dubai</option>
