@@ -161,14 +161,12 @@ const verifyStripe = async (req, res) => {
 };
 
 // Verify payment for Razorpay
-const verifyRazorapay = async (req, res) => {
+const verifyRazorpay = async (req, res) => {  
   try {
     const { userId, razor_order_id } = req.body;
     const orderInfo = await razorpayInstance.orders.fetch(razor_order_id);
     if (orderInfo.status === "paid") {
-      // Update payment status based on receipt (order ID)
       await orderModel.findByIdAndUpdate(orderInfo.receipt, { payment: true });
-      // Clear user's cart (using userModel, not orderModel)
       await userModel.findByIdAndUpdate(userId, { cartData: {} });
       res.json({ success: true, message: "Payment Successful" });
     } else {
@@ -179,6 +177,7 @@ const verifyRazorapay = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+
 
 // All orders data for admin panel
 const allOrders = async (req, res) => {
@@ -215,14 +214,14 @@ const allOrders = async (req, res) => {
     }
   };
   
-  export { 
-    verifyRazorapay, 
-    verifyStripe, 
-    placeOrder, 
-    placeOrderStripe, 
-    placeOrderRazorpay, 
-    allOrders, 
-    userOrders, 
-    updateStatus 
-  };
+export { 
+  verifyRazorpay,  
+  verifyStripe, 
+  placeOrder, 
+  placeOrderStripe, 
+  placeOrderRazorpay, 
+  allOrders, 
+  userOrders, 
+  updateStatus 
+};
   
