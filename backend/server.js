@@ -17,7 +17,7 @@ const allowedOrigins = [
     'http://localhost:5173',
     'http://localhost:5174',
     'http://localhost:3000',
-    'https://flower-oasis-s22l.vercel.app',
+    'https://flower-oasis.vercel.app',
     'https://flower-oasis-admin.vercel.app',
     'https://flower-oasis-admin.onrender.com',
     'https://flower-oasis-1.onrender.com'

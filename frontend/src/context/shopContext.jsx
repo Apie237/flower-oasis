@@ -17,6 +17,7 @@ const ShopContextProvider = (props) => {
   const [token, setToken] = useState('');
   const [products, setProducts] = useState([]);
   const [sumTotal, setSumTotal] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   const addToCart = async (productId, size, quantity, selectedAddOns = [], deliveryDate, deliveryTime, message, sumTotal) => {
     console.log('Adding to cart:', productId, size, quantity, selectedAddOns, deliveryDate, deliveryTime, message, sumTotal);
@@ -174,18 +175,20 @@ const ShopContextProvider = (props) => {
     }, 0);
   };
 
-  const getProductsData = async () => {
+ const getProductsData = async () => {
+    setLoading(true); // Start loading
     try {
       const response = await axios.get(backendUrl + '/api/product/list');
       if (response.data.success) {
         setProducts(response.data.products);
-        console.log('Products fetched:', response.data.products); // Log fetched products
       } else {
         toast.error(response.data.message);
       }
     } catch (error) {
       console.error('Error fetching products:', error);
       toast.error(error.message);
+    } finally {
+      setLoading(false); // Stop loading regardless of success/fail
     }
   };
 
@@ -273,6 +276,7 @@ const ShopContextProvider = (props) => {
     setCartItems,
     sumTotal,
     setSumTotal,
+    loading
   };
 
   return <ShopContext.Provider value={value}>{props.children}</ShopContext.Provider>;

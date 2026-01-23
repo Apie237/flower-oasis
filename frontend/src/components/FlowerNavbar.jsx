@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 
 export default function FlowerNavbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location]);
   
   const categories = [
     { name: "BOUQUETS", path: "/collection/bouquets" },
