@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Background -->
+  <rect width="100" height="100" fill="#1a1a2e" rx="20"/>
+  
+  <!-- Outer ring segments -->
+  <g transform="translate(50, 50)">
+    <!-- Ring segment 1 (top-right) -->
+    <path d="M 15 -15 Q 25 -25 35 -15 L 28 -8 Q 22 -14 15 -8 Z" fill="#9f1239"/>
+    
+    <!-- Ring segment 2 (right) -->
+    <path d="M 35 -15 Q 45 0 35 15 L 28 8 Q 35 0 28 -8 Z" fill="#be123c"/>
+    
+    <!-- Ring segment 3 (bottom-right) -->
+    <path d="M 35 15 Q 25 25 15 15 L 15 8 Q 22 14 28 8 Z" fill="#e11d48"/>
+    
+    <!-- Ring segment 4 (bottom) -->
+    <path d="M 15 15 Q 0 25 -15 15 L -8 8 Q 0 14 8 8 Z" fill="#fb7185"/>
+    
+    <!-- Ring segment 5 (bottom-left) -->
+    <path d="M -15 15 Q -25 25 -35 15 L -28 8 Q -22 14 -15 8 Z" fill="#fda4af"/>
+    
+    <!-- Ring segment 6 (left) -->
+    <path d="M -35 15 Q -45 0 -35 -15 L -28 -8 Q -35 0 -28 8 Z" fill="#e11d48"/>
+    
+    <!-- Ring segment 7 (top-left) -->
+    <path d="M -35 -15 Q -25 -25 -15 -15 L -15 -8 Q -22 -14 -28 -8 Z" fill="#be123c"/>
+    
+    <!-- Ring segment 8 (top) -->
+    <path d="M -15 -15 Q 0 -25 15 -15 L 8 -8 Q 0 -14 -8 -8 Z" fill="#9f1239"/>
+    
+    <!-- Flower center -->
+    <g>
+      <!-- Petals in center -->
+      <ellipse cx="0" cy="-8" rx="3" ry="6" fill="#fecdd3"/>
+      <ellipse cx="5.7" cy="-5.7" rx="3" ry="6" fill="#fecdd3" transform="rotate(45 5.7 -5.7)"/>
+      <ellipse cx="8" cy="0" rx="3" ry="6" fill="#fecdd3" transform="rotate(90 8 0)"/>
+      <ellipse cx="5.7" cy="5.7" rx="3" ry="6" fill="#fecdd3" transform="rotate(135 5.7 5.7)"/>
+      <ellipse cx="0" cy="8" rx="3" ry="6" fill="#fecdd3" transform="rotate(180 0 8)"/>
+      <ellipse cx="-5.7" cy="5.7" rx="3" ry="6" fill="#fecdd3" transform="rotate(225 -5.7 5.7)"/>
+      <ellipse cx="-8" cy="0" rx="3" ry="6" fill="#fecdd3" transform="rotate(270 -8 0)"/>
+      <ellipse cx="-5.7" cy="-5.7" rx="3" ry="6" fill="#fecdd3" transform="rotate(315 -5.7 -5.7)"/>
+      
+      <!-- Center circle -->
+      <circle cx="0" cy="0" r="4" fill="#ffe4e6"/>
+    </g>
+  </g>
+</svg>
